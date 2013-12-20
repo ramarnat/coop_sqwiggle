@@ -2,3 +2,5 @@
 .api_creds
 
 config.yml
+
+*.out
