@@ -29,7 +29,7 @@ module Sqwiggle
     def coop_feed
       note_exported = {}
       while 1==1 do
-        entries = @coop_api.response("/groups/10707/#{Time.now.strftime('%Y%m%d')}")
+        entries = @coop_api.response("/groups/#{CONFIG['coop_group']}/#{Time.now.strftime('%Y%m%d')}")
         entries.each do |entry|
 #          binding.pry
           text = nil
