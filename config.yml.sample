@@ -1,0 +1,11 @@
+:development:
+  sqwiggle_api_endpoint : api.sqwiggle.com
+  sqwiggle_room_id : 1234
+  coop_api_endpoint : coopapp.com
+  coop_group : 1234
+
+:production:
+  sqwiggle_api_endpoint : api.sqwiggle.com
+  sqwiggle_room_id : 1234
+  coop_api_endpoint : coopapp.com
+  coop_group : 1234

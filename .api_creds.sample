@@ -1,0 +1,7 @@
+# add the credentials here and save as .sqwiggle
+api.sqwiggle.com :
+  :api_key    : blah
+  :api_secret : X
+coopapp.com :
+  :api_key    : coop_key
+  :api_secret : coop_password
