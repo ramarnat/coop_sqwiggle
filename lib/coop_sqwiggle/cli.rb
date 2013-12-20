@@ -41,26 +41,29 @@ module Sqwiggle
           elsif entry['type'] == "DayEntry" &&
                 !entry['timer_started_at'].nil?
             text = "#{entry['user']['name']}\n [#{entry['hours']}] #{entry['text']} in #{entry['client']}/#{entry['project']} (#{entry['task']})"
-          elsif entry['type'] == "DayEntry" && !entry['timer_started_at'].nil?
-            # do nothing, task is still going on
           end
 
           if text
             h = {}
-
-            r = @sqwiggle_api.conn.post do |req|
-              if note_exported[entry['id']]
-                h['message'] = text
-                h['id'] = note_exported[entry['id']]
+            r = nil
+            if note_exported[entry['id']]
+              h['text'] = text
+              r = @sqwiggle_api.conn.put do |req|
                 req.url "/messages/#{note_exported[entry['id']]}"
-              else
-                h['text'] = text
-                h['room_id'] = CONFIG['sqwiggle_room_id']
-                req.url "/messages"
+                req.headers['Content-Type'] = 'application/json'
+                req.body = h.to_json
               end
-              req.headers['Content-Type'] = 'application/json'
-              req.body = h.to_json
+            else
+              h['text'] = text
+              h['room_id'] = CONFIG['sqwiggle_room_id']
+
+              r = @sqwiggle_api.conn.post do |req|
+                req.url "/messages"
+                req.headers['Content-Type'] = 'application/json'
+                req.body = h.to_json
+              end
             end
+
             body = JSON.parse(r.body)
             note_exported[entry['id']] = body['id']
           end
