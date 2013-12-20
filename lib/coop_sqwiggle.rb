@@ -4,7 +4,6 @@ require 'yaml'
 require 'active_support/core_ext'
 require 'json'
 require 'logger'
-require 'feedzirra'
 require 'pry'
 require 'pp'
 
