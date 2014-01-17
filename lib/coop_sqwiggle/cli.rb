@@ -28,8 +28,15 @@ module Sqwiggle
     desc "coop_feed", "Show the coop feed."
     def coop_feed
       note_exported = {}
-      while 1==1 do
-        entries = @coop_api.response("/groups/#{CONFIG['coop_group']}/#{Time.now.strftime('%Y%m%d')}")
+      request_time = nil
+      loop do
+        # reset the messages tracked if its a new new day
+        unless request_time == Time.now.strftime('%Y%m%d')
+          note_exported = {}
+          request_time = Time.now.strftime('%Y%m%d')
+        end
+
+        entries = @coop_api.response("/groups/#{CONFIG['coop_group']}/#{request_time}")
         entries.each do |entry|
 #          binding.pry
           text = nil
