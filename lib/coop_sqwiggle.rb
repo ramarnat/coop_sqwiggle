@@ -9,7 +9,7 @@ require 'pp'
 
 module Sqwiggle
   # Set Version
-  VERSION = '0.0.1'
+  VERSION = '0.1.0'
 
   # Setup Logger
   Log = Logger.new(STDOUT)
