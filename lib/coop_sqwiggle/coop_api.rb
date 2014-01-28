@@ -27,12 +27,24 @@ module Coop
     end
 
     def response(end_point, format='json')
-      @response = conn.get "#{end_point}" do |request|
-        request.options[:timeout] = 900
-        request.options[:open_timeout] = 900
-        request.headers['Accept'] = 'application/json'
-        request.headers['Content-Type'] = 'application/json; charset=utf-8'
-        request.headers['User-Agent'] = 'Sqwiggle Integration Script'
+      retry_no = 0
+      begin
+        @response = conn.get "#{end_point}" do |request|
+          request.options[:timeout] = 900
+          request.options[:open_timeout] = 900
+          request.headers['Accept'] = 'application/json'
+          request.headers['Content-Type'] = 'application/json; charset=utf-8'
+          request.headers['User-Agent'] = 'Sqwiggle Integration Script'
+        end
+      rescue Sqwiggle::InternalServerError
+        logger.info "Internal Server Error, retrying ##{retry_no}"
+        retry_no += 1
+        sleep 30
+        if retry_no < 10
+          retry
+        else
+          raise
+        end
       end
 
       @body = JSON.parse(@response.body)
